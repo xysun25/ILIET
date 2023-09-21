@@ -14,7 +14,7 @@ ATOM_NUM = {
 }
 
 
-def attach_charges(atoms, fileobj='ACF.dat', displacement=1e-4):
+def attach_charges(atoms, fileobj='ACF.dat', displacement=None):
     """Attach the charges from the fileobj to the Atoms."""
     if isinstance(fileobj, str):
         with open(fileobj) as fd:
