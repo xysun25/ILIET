@@ -35,7 +35,7 @@ VASP_FLAGS = {
 atoms = read('initial.vasp', format='vasp')
 
 # Set up the VASP calculator
-calc = Vasp(directory="vasp_sp", **VASP_FLAGS)
+calc = Vasp(directory='vasp_sp', **VASP_FLAGS)
 atoms.set_calculator(calc)
 
 # Create Langevin object
@@ -53,8 +53,8 @@ for step in range(10):  # Adjust the number of steps as needed
     aimd.run(1)  # Run 1 timesteps per iteration
 
     # Calculate Bader charges using subprocess
-    os.chdir("vasp_sp")
-    subprocess.run(["chgsum.pl" "AECCAR0" "AECCAR2"])
+    os.chdir('vasp_sp')
+    subprocess.run(['chgsum.pl', 'AECCAR0', 'AECCAR2'])
     subprocess.run(['bader', 'CHGCAR', '-ref', 'CHGCAR_sum'])
     # TODO: modify attach_charges func for vasp
     attach_charges(atoms, 'ACF.dat')
@@ -62,4 +62,4 @@ for step in range(10):  # Adjust the number of steps as needed
 
     traj.write(atoms)
 
-print("AIMD simulation with Bader charge calculation completed.")
+print('AIMD simulation with Bader charge calculation completed.')
