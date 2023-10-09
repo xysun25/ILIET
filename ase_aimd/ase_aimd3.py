@@ -6,12 +6,14 @@ from ase.md import Langevin
 import ase.units as units
 from ase.calculators.vasp import Vasp
 from ase.md.velocitydistribution import MaxwellBoltzmannDistribution
+from nose import NoseHoover
 from bader import attach_charges
+
 
 VASP_FLAGS = {
     "nsw": 0,
     "nelm": 300,
-    "isif": 0,
+    "isif": 2,
     "isym": 0,
     "prec": "Normal",
     "lreal": "Auto",
@@ -42,10 +44,10 @@ atoms.set_calculator(calc)
 MaxwellBoltzmannDistribution(atoms, temperature_K=500)
 
 # Create Langevin object
-aimd = Langevin(atoms, timestep=1 * units.fs,
-                temperature=500 * units.kB,
-                friction=0.01,
-                logfile='aimd_with_bader.log')
+aimd = NoseHoover(atoms, timestep=1 * units.fs,
+                  temperature=500 * units.kB,
+                  nvt_q=334,
+                  logfile='aimd_with_bader.log')
 
 # Create a trajectory file to save the simulation snapshots
 traj = Trajectory('aimd_with_bader.traj', 'w', atoms)

@@ -12,7 +12,7 @@ from bader import attach_charges
 VASP_FLAGS = {
     "nsw": 0,
     "nelm": 300,
-    "isif": 2,
+    "isif": 0,
     "isym": 0,
     "prec": "Normal",
     "lreal": "Auto",
