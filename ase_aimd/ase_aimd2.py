@@ -3,6 +3,7 @@ import subprocess
 from ase import Atoms
 from ase.io import read, write, Trajectory
 from ase.md import Langevin
+from ase.md.nvtberendsen import NVTBerendsen
 import ase.units as units
 from ase.calculators.vasp import Vasp
 from ase.md.velocitydistribution import MaxwellBoltzmannDistribution
@@ -39,20 +40,20 @@ calc = Vasp(directory='vasp_sp', **VASP_FLAGS)
 atoms.set_calculator(calc)
 
 # Set the momenta corresponding to T=100K
-MaxwellBoltzmannDistribution(atoms, temperature_K=100)
+MaxwellBoltzmannDistribution(atoms, temperature_K=500)
 
 # Create Langevin object
-aimd = Langevin(atoms, timestep=1 * units.fs,
-                temperature=300 * units.kB,
-                friction=0.01,
-                logfile='aimd_with_bader.log')
+aimd = NVTBerendsen(atoms, timestep=1 * units.fs,
+                    temperature=500 * units.kB,
+                    taut=0.5*600*units.fs,
+                    logfile='aimd_with_bader.log')
 
 # Create a trajectory file to save the simulation snapshots
 traj = Trajectory('aimd_with_bader.traj', 'w', atoms)
 # aimd.attach(traj.write, interval=1)
 
 # Run the AIMD simulation
-total_step = 12000
+total_step = 5000
 for step in range(total_step):
     aimd.run(1)  # Run 1 timesteps per iteration
 
